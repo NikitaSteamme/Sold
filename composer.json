@@ -1,0 +1,23 @@
+{
+    "name": "nikitam/example",
+    "license": "GPL-3.0-only",
+    "authors": [
+        {
+            "name": "Nikita Meshn",
+            "email": "nikita258963@gmail.com"
+        }
+    ],
+    "require": {
+        "irazasyed/telegram-bot-sdk": "2.0",
+        "romanpitak/php-rest-client": "^1.2",
+        "php-curl-class/php-curl-class": "^8.5",
+        "gabordemooij/redbean": "dev-master",
+      "ext-pdo": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "Nikitam\\Example\\": "src/"
+        }
+    },
+    "description": "Some description"
+}
