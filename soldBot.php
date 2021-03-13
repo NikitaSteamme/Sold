@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use Telegram\Bot\Api;
+use Nikitam\Example\DB;
 
 require __DIR__ . '/vendor/autoload.php';
 
@@ -16,11 +17,35 @@ $chat_id = $result["message"]["chat"]["id"]; //Уникальный иденти
 $name = $result["message"]["from"]["username"]; //Юзернейм пользователя
 $keyboard = [["Кнопка"]]; //Клавиатура
 
+
 if($text){
     if ($text == "/start") {
-        $reply = "start msg";
-        $reply_markup = $telegram->replyKeyboardMarkup([ 'keyboard' => $keyboard, 'resize_keyboard' => true, 'one_time_keyboard' => false ]);
-        $telegram->sendMessage([ 'chat_id' => $chat_id, 'text' => $reply, 'reply_markup' => $reply_markup ]);
+        try {
+            $keyboard = [
+                ['Начать поиск'],
+                ['Контакты'],
+                ['Подробнее']
+            ];
+            $db = new DB();
+            $db->updateStage($chat_id, "2");
+
+            $reply_markup = $telegram->replyKeyboardMarkup([
+                'keyboard' => $keyboard,
+                'resize_keyboard' => true,
+                'one_time_keyboard' => true
+            ]);
+            $response = $telegram->sendMessage([
+                'chat_id' => $chat_id,
+                'reply_markup' => $reply_markup,
+                'text' => $db->getStage($chat_id)
+            ]);
+        } catch (Exception $e){
+            $response = $telegram->sendMessage([
+                'chat_id' => $chat_id,
+                'text' => $e->getMessage()
+            ]);
+        }
+
 
     }elseif (($text == "/imgtest")) {
 
